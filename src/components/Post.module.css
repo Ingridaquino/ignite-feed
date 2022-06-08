@@ -91,6 +91,18 @@
     margin-top: 1rem;
 }
 
+.commentForm footer {
+    /*Button fica invisivel*/
+    visibility: hidden;
+    max-height: 0;
+}
+
+.commentForm:focus-within footer {
+    /*focus-within usar para quando quiser foco no elemento(footer) que está dentro do pai(comment)*/
+    visibility: visible;
+    max-height: none;
+}
+
 .commentForm button[type=submit] {
     padding: 1rem 1.5rem;
     margin-top: 1rem;
@@ -100,4 +112,10 @@
     color: var(--white);
     font-weight: bold;
     cursor: pointer;
+
+    transition: background-color 0.1s;
+}
+
+.commentForm button[type=submit]:hover {
+    background-color: var(--green-300);
 }
