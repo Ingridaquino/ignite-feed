@@ -1,5 +1,6 @@
 import { format,formatDistanceToNow } from 'date-fns'; //Formatar a data
 import ptBR from 'date-fns/locale/pt-BR'; //Formatar o idioma
+import { useState } from 'react';
 
 import { Avatar } from "./Avatar";
 import { Comment } from './Comment';
@@ -7,14 +8,17 @@ import { Comment } from './Comment';
 import styles from './Post.module.css';
 
 
-//Array de comentarios
-const comments = [
-    1,
-    2,
-    3,
-];
+
+
 
 export function Post({author, publishedAt, content}) {
+    // estado = são variáveis que eu quero que o componente monitore 
+    //Array de comentarios
+    const [comments, setComments] = useState([
+        1,
+        2,
+    ])
+
     //Formatação da data
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
         locale: ptBR,
@@ -25,6 +29,14 @@ export function Post({author, publishedAt, content}) {
         locale: ptBR,
         addSuffix: true,
     })
+
+    // //Function de click do form (para add um novo comentario)
+    function handleCreateNewComment() {
+        event.preventDefault() //Para permanecer na mesma pag depois de add o comentario
+        
+        //imutabilidade, não passamos somente o valor que queremos (3), passamos os que já temos (1, 2)
+        setComments([...comments, comments.length + 1]) // Adicionado o comentario
+    }
 
 
     return (
@@ -54,7 +66,8 @@ export function Post({author, publishedAt, content}) {
                })}
             </div>
 
-            <form className={styles.commentForm}>
+            {/* onSubmit para ouvir o evento de click para deixar um comment */}
+            <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
                 <strong>Deixe seu feedback</strong>
 
                 <textarea 
