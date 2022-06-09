@@ -1,16 +1,30 @@
-import { format } from 'date-fns'; //Formatar a data
+import { format,formatDistanceToNow } from 'date-fns'; //Formatar a data
 import ptBR from 'date-fns/locale/pt-BR'; //Formatar o idioma
 
 import { Avatar } from "./Avatar";
 import { Comment } from './Comment';
 
-import styles from './Post.module.css'
+import styles from './Post.module.css';
 
-export function Post({author, publishedAt}) {
+
+//Array de comentarios
+const comments = [
+    1,
+    2,
+    3,
+];
+
+export function Post({author, publishedAt, content}) {
     //Formatação da data
-    // const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
-    //     locale: ptBR,
-    // })
+    const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+        locale: ptBR,
+    })
+
+    //Data atual
+    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+        locale: ptBR,
+        addSuffix: true,
+    })
 
 
     return (
@@ -24,22 +38,20 @@ export function Post({author, publishedAt}) {
                     </div>
                 </div>
 
-                {/* <time title={publishedDateFormatted} dateTime="2022-06-06 08:14:22">
-                    
-                </time> */}
+                <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+                        {publishedDateRelativeToNow}
+                </time>
             </header>
 
+            {/* Percorrer cada posts */}
             <div className={styles.content}>
-                <p>Fala galeraa 👋</p>
-
-                <p>Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀</p>
-                <p>👉{'  '}<a href="">jane.design/doctorcare</a></p>
-
-                <p>
-                    <a href="">#novoprojeto</a> {'  '}
-                    <a href="">#nlw </a> {'  '}
-                    <a href="">#rocketseat</a> {'  '}
-                </p>
+               {content.map(item => {
+                    if(item.type === 'paragraph') {
+                        return <p>{item.content}</p>;
+                    } else if (item.type === 'link') {
+                        return <p><a href='#'>{item.content}</a></p>
+                    }
+               })}
             </div>
 
             <form className={styles.commentForm}>
@@ -54,11 +66,11 @@ export function Post({author, publishedAt}) {
                 </footer>
             </form>
 
+            {/* Percorre cada comentário */}
             <div className={styles.commentList}>
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
+                {comments.map(comment => {
+                    return <Comment />
+                })}
             </div>
         </article>
     )
