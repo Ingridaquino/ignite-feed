@@ -52,8 +52,15 @@ export function Post({author, publishedAt, content}) {
     }
 
     //funcao para deletar os comentario2
-    function deleteComment(comment) {
-        console.log('deletar comentario'+ comment)
+    function deleteComment(commentToDelete) {
+        //Nova lista de comentarios sem os comentarios deletados, 
+        //(filter) quero filtrar apenas os comentarios existentes, se for true entra na lista se for false delete
+        const commentsWithoutDeletedOne = comments.filter(comment => {
+            return comment === commentToDelete;
+        })        
+        
+        // imutabilidade ->  as variáveis não sofrem mutação, nós não alteramos o valor da variável, nós criamos um novo valor(ou melhor um espaço)
+        setComments(commentsWithoutDeletedOne);
     }
 
 
