@@ -15,9 +15,12 @@ export function Post({author, publishedAt, content}) {
     // estado = são variáveis que eu quero que o componente monitore 
     //Array de comentarios
     const [comments, setComments] = useState([
-        1,
-        2,
+        'Post muito bacana 1'
     ])
+    
+    //estado para pega um novo comentario 
+    const [newCommentText, setNewCommentText] = useState('')
+
 
     //Formatação da data
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
@@ -33,9 +36,23 @@ export function Post({author, publishedAt, content}) {
     // //Function de click do form (para add um novo comentario)
     function handleCreateNewComment() {
         event.preventDefault() //Para permanecer na mesma pag depois de add o comentario
-        
+
+        // //Pegar o texto do comentario do user {imperativo}
+        // const newCommentText = event.target.comment.value
+
         //imutabilidade, não passamos somente o valor que queremos (3), passamos os que já temos (1, 2)
-        setComments([...comments, comments.length + 1]) // Adicionado o comentario
+        setComments([...comments, newCommentText]) // Adicionado o comentario
+
+        // event.target.comment.value = ''; //Deixando a textarea limpa após posta um comentario {imperativo}
+
+        //Ele armazena o conteudo, com ('') a gente volta ele para o valor original que é um valor em branco
+        setNewCommentText('')
+    }
+
+    //funcao que vai monitorar toda vez que houver um comentario novo.
+    function handleNewCommentChange() {
+        //salvando o valor do textarea
+        setNewCommentText(event.target.value)
     }
 
 
@@ -71,7 +88,10 @@ export function Post({author, publishedAt, content}) {
                 <strong>Deixe seu feedback</strong>
 
                 <textarea 
+                    name="comment"
+                    value={newCommentText} //Isso vai fazer com que toda vezes que o estado de newCommentText mudar, newCommentText do value irá refletir.
                     placeholder='Deixe um comentário'
+                    onChange={handleNewCommentChange}
                 />
 
                 <footer>
@@ -82,7 +102,7 @@ export function Post({author, publishedAt, content}) {
             {/* Percorre cada comentário */}
             <div className={styles.commentList}>
                 {comments.map(comment => {
-                    return <Comment />
+                    return <Comment content={comment}/>
                 })}
             </div>
         </article>
