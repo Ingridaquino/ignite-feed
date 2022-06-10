@@ -7,10 +7,6 @@ import { Comment } from './Comment';
 
 import styles from './Post.module.css';
 
-
-
-
-
 export function Post({author, publishedAt, content}) {
     // estado = são variáveis que eu quero que o componente monitore 
     //Array de comentarios
@@ -53,6 +49,11 @@ export function Post({author, publishedAt, content}) {
     function handleNewCommentChange() {
         //salvando o valor do textarea
         setNewCommentText(event.target.value)
+    }
+
+    //funcao para deletar os comentario2
+    function deleteComment(comment) {
+        console.log('deletar comentario'+ comment)
     }
 
 
@@ -102,7 +103,14 @@ export function Post({author, publishedAt, content}) {
             {/* Percorre cada comentário */}
             <div className={styles.commentList}>
                 {comments.map(comment => {
-                    return <Comment key={comment} content={comment}/>
+                    return (    
+                        <Comment 
+                            key={comment} 
+                            content={comment} 
+                            //Passado a funcao como parametro(propriedade) assim, para conseguir deletar
+                            deleteComment={deleteComment}
+                        />
+                    )
                 })}
             </div>
         </article>
