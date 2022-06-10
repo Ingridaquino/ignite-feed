@@ -15,7 +15,7 @@ export function Post({author, publishedAt, content}) {
     ])
     
     //estado para pega um novo comentario 
-    const [newCommentText, setNewCommentText] = useState('')
+    const [newCommentText, setNewCommentText] = useState('');
 
 
     //Formatação da data
@@ -47,8 +47,15 @@ export function Post({author, publishedAt, content}) {
 
     //funcao que vai monitorar toda vez que houver um comentario novo.
     function handleNewCommentChange() {
+        //Informando que o campo não está mais com erro, pois o user digitou
+        event.target.setCustomValidity('');
         //salvando o valor do textarea
-        setNewCommentText(event.target.value)
+        setNewCommentText(event.target.value);
+    }
+
+    //Funcao de validação dos comentarios ( para não enviar comentarios vazios) 
+    function handleNewCommentInvalid() {
+        event.target.setCustomValidity('Esse campo é obrigatório!');
     }
 
     //funcao para deletar os comentario2
@@ -63,6 +70,8 @@ export function Post({author, publishedAt, content}) {
         setComments(commentsWithoutDeletedOne);
     }
 
+    //variável do botao
+    const isNewCommentEmpy = newCommentText.length === 0;
 
     return (
         <article className={styles.post}>
@@ -100,10 +109,17 @@ export function Post({author, publishedAt, content}) {
                     value={newCommentText} //Isso vai fazer com que toda vezes que o estado de newCommentText mudar, newCommentText do value irá refletir.
                     placeholder='Deixe um comentário'
                     onChange={handleNewCommentChange}
+                    onInvalid={handleNewCommentInvalid}
+                    required                
                 />
+                {/* required(Não permite enviar comentarios vazios) 
+                onInvalid essa props é chamada sempre que o html chamar o submit do form, é invalido(vazio) */}
 
                 <footer>
-                    <button type='submit'>Publicar</button>
+                    {/* o botao estará desabilitado enquanto não houver nenhuma digitacao (disabled) */}
+                    <button type='submit' disabled={isNewCommentEmpy}>
+                        Publicar
+                    </button>
                 </footer>
             </form>
 
